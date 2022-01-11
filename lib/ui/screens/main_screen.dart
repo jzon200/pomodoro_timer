@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pomodoro_timer/ui/theme/pomodoro_app_theme.dart';
-import 'package:pomodoro_timer/ui/screens/pomodoro_screen.dart';
-import 'package:pomodoro_timer/ui/screens/progress_screen.dart';
-import 'package:pomodoro_timer/ui/screens/settings_screen.dart';
-import 'package:pomodoro_timer/ui/widgets/countdown_timer.dart';
+import 'package:flutter/services.dart';
+import 'screens.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -12,8 +9,8 @@ class MainScreen extends StatefulWidget {
   _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>  {
-  int _selectedTabIndex = 0;
+class _MainScreenState extends State<MainScreen> {
+  var _selectedTabIndex = 0;
   final List<Widget> _pages = const [
     PomodoroScreen(),
     ProgressScreen(),
@@ -28,31 +25,47 @@ class _MainScreenState extends State<MainScreen>  {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedTabIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
-        selectedItemColor:
-            Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
-        currentIndex: _selectedTabIndex,
-        onTap: goToTab,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.timer),
-            label: 'Pomodoro',
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value:
+          SystemUiOverlayStyle(statusBarColor: Theme.of(context).primaryColor),
+      child: Scaffold(
+        body: IndexedStack(
+          index: _selectedTabIndex,
+          children: _pages,
+        ),
+        bottomNavigationBar: NavigationBarTheme(
+          data: NavigationBarThemeData(
+              height: 60,
+              backgroundColor: Theme.of(context).primaryColor,
+              iconTheme: MaterialStateProperty.all(
+                  const IconThemeData(color: Colors.white)),
+              labelTextStyle:
+                  MaterialStateProperty.all(Theme.of(context).textTheme.button),
+              indicatorColor: const Color(0xFFFFA299),
+              labelBehavior:
+                  NavigationDestinationLabelBehavior.onlyShowSelected),
+          child: NavigationBar(
+            onDestinationSelected: goToTab,
+            selectedIndex: _selectedTabIndex,
+            destinations: const <NavigationDestination>[
+              NavigationDestination(
+                icon: Icon(Icons.timer_outlined),
+                selectedIcon: Icon(Icons.timer),
+                label: 'Pomodoro',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.calendar_today_outlined),
+                selectedIcon: Icon(Icons.calendar_today),
+                label: 'Progress',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings_outlined),
+                selectedIcon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.date_range),
-            label: 'Progress',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
+        ),
       ),
     );
   }

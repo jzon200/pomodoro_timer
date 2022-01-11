@@ -9,11 +9,11 @@ class PomodoroAppTheme {
   static const Color redStatusBar = Color(0xFFEA968C);
 
   static TextTheme lightTextTheme = TextTheme(
-    headline3: GoogleFonts.roboto(color: white80),
-    headline4: GoogleFonts.duruSans(color: white80),
-    caption: GoogleFonts.roboto(color: white80),
+    headline3: GoogleFonts.roboto(color: Colors.white),
+    headline4: GoogleFonts.duruSans(color: Colors.white),
+    caption: GoogleFonts.roboto(color: Colors.white),
     button: GoogleFonts.roboto(
-      color: white80,
+      color: Colors.white,
       fontWeight: FontWeight.w500,
       fontSize: 14,
     ),
@@ -27,10 +27,11 @@ class PomodoroAppTheme {
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: redStatusBar),
       ),
+
       textTheme: lightTextTheme,
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.white,
-        unselectedItemColor: white80,
+        unselectedItemColor: Colors.white,
       ),
     );
   }
